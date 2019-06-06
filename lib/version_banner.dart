@@ -21,7 +21,7 @@ class VersionBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.ltr,
       child: Banner(
         color: color,
         message: text,
