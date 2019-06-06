@@ -1,6 +1,6 @@
 name: version_banner
 description: A banner that shows the current version or flavour of the app
-version: 0.0.1
+version: 0.1.0
 author:
 homepage:
 
