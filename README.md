@@ -8,6 +8,8 @@ An app Banner Widget that shows the current app version. Can be used with [App F
 
 This widget should wrap `MaterialApp` or `CupertinoApp`. 
 
+![Example](https://user-images.githubusercontent.com/10728633/59044609-5aa82c00-8876-11e9-99d2-da84a81af2e6.png)
+
 ```dart
 VersionBanner(
           text: "Yay!",
