@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
 
     if (isDevVersion) {
       return VersionBanner(
-          text: "Yay!",
+        packageExtensions: ["example"],
           child: materialApp
       );
     }
