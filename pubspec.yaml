@@ -1,7 +1,6 @@
 name: version_banner
 description: A banner that shows the current version or flavour of the app
 version: 0.2.1
-author: Gonçalo Palma <solid.goncalo@gmail.com>
 homepage: https://github.com/Vanethos/flutter_version_banner
 issue_tracker: https://github.com/Vanethos/flutter_version_banner/issues
 
