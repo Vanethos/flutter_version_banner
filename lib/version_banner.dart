@@ -49,28 +49,28 @@ class VersionBanner extends StatelessWidget {
   ///   }
   /// }
   /// ```
-  Widget child;
+  final Widget child;
 
   /// Banner Location on the app, see [BannerLocation] for possible values.
   ///
   /// Has a default value of BannerLocation.topEnd
-  BannerLocation location;
+  final BannerLocation location;
 
   /// Text Style to be applied in the Banner
   ///
   /// Has a default value of a white bold text
-  TextStyle textStyle;
+  final TextStyle textStyle;
 
   /// Banner message
-  String text;
+  final String? text;
 
   /// Banner color
   ///
   /// Has a default value of Red
-  Color color;
+  final Color color;
 
   /// Visibility of the banner
-  bool visible;
+  final bool visible;
 
   /// List of package extensions to hide or show
   ///
@@ -79,17 +79,18 @@ class VersionBanner extends StatelessWidget {
   ///
   /// This property is overriden by [visible]. If [visible] is false,
   /// the banner will not be shown.
-  List<String> packageExtensions;
+  final List<String>? packageExtensions;
 
-  VersionBanner(
-      {@required this.child,
-      this.text,
-      this.location = BannerLocation.topEnd,
-      this.textStyle = const TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255),
-          fontWeight: FontWeight.bold),
-      this.color = const Color.fromARGB(255, 255, 0, 0),
-      this.visible = true, this.packageExtensions});
+  VersionBanner({
+    required this.child,
+    this.text,
+    this.location = BannerLocation.topEnd,
+    this.textStyle = const TextStyle(
+        color: Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold),
+    this.color = const Color.fromARGB(255, 255, 0, 0),
+    this.visible = true,
+    this.packageExtensions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -98,15 +99,16 @@ class VersionBanner extends StatelessWidget {
       /// the default text OR if we are going to check the visibility of the
       /// banner via the package extensions.
       /// If this is the case, we will need to access the package_info plugin
-      if (text == null || packageExtensions!= null) {
+      if (text == null || packageExtensions != null) {
         return FutureBuilder<PackageInfo>(
             future: PackageInfo.fromPlatform(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 var isDev = false;
                 if (packageExtensions != null) {
-                  for (var package in packageExtensions) {
-                    if (snapshot.data.packageName.contains(package)) {
+                  for (var package in packageExtensions!) {
+                    if (snapshot.data != null &&
+                        snapshot.data!.packageName.contains(package)) {
                       isDev = true;
                       break;
                     }
@@ -115,12 +117,14 @@ class VersionBanner extends StatelessWidget {
                   isDev = true;
                 }
 
+
+
                 if (isDev) {
                   return Directionality(
                     textDirection: TextDirection.ltr,
                     child: Banner(
                       color: color,
-                      message: text ?? snapshot.data.version,
+                      message: text ?? snapshot.data?.version ?? '',
                       location: location,
                       textStyle: textStyle,
                       child: child,
@@ -131,17 +135,21 @@ class VersionBanner extends StatelessWidget {
 
               /// If we are not in a development package, return the original child
               return child;
-            }
-        );
+            });
       }
 
       /// If we don't use the default text or search the package names, then
       /// we return the banner with the user's input
+
+      if (text == null) {
+        throw 'Text attribute should be defined';
+      }
+
       return Directionality(
         textDirection: TextDirection.ltr,
         child: Banner(
           color: color,
-          message: text,
+          message: text!,
           location: location,
           textStyle: textStyle,
           child: child,
